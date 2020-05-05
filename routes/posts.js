@@ -34,4 +34,31 @@ router.get('/:id', (req, res)=>{
 })
 
 
+//delete post
+router.delete('/:id', (req, res)=>{
+    const post = Post.remove({_id: req.params.id})
+    .then( post=>{
+        res.json({deleted: "post deleted succesfully"})}
+    ).catch(err=>{
+        res.json({message: "couldn't find the id"})
+    })
+})
+
+
+//update one
+router.patch('/:id', (req, res)=>{
+    const post = Post.updateOne({_id: req.params.id}, {$set:{
+        title: req.body.title,
+        description: req.body.description
+    }})
+    .then( post=>{
+        res.json({Updated: "post updated succesfully"})}
+    ).catch(err=>{
+        res.json({message: "couldn't find the id"})
+    })
+})
+
 module.exports = router;
+
+//update post
+
