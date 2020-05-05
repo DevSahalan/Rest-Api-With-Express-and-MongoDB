@@ -10,8 +10,8 @@ router.get("/", (req, res) => {
     })
     .catch((err) => {
       res.json({ message: err });
-    });
-});
+    })
+})
 
 //create and save post
 router.post("/", (req, res) => {
@@ -20,6 +20,18 @@ router.post("/", (req, res) => {
       res.send(post);
     })
     .catch((err) => res.status(404).send("enter both title and description"));
-});
+})
+
+//get specific post
+
+router.get('/:id', (req, res)=>{
+    const post = Post.findById(req.params.id)
+    .then(post =>{
+        res.json(post)
+    }).catch(err =>{
+        res.json({message: "id isn't exist"})
+    })
+})
+
 
 module.exports = router;
