@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
 
+
+
+
 //get all posts
 router.get("/", (req, res) => {
   const posts = Post.find()
@@ -45,17 +48,36 @@ router.delete('/:id', (req, res)=>{
 })
 
 
+// //update one
+// router.patch('/:id', (req, res)=>{
+//     const post = Post.updateOne({_id: req.params.id}, {$set:{
+//         title: req.body.title,
+//         description: req.body.description
+//     }})
+//     .then( post=>{
+//         res.json({Updated: "post updated succesfully"})}
+//     ).catch(err=>{
+//         res.json({message: "couldn't find the id"})
+//         console.log(err)
+//     })
+// })
+
+
 //update one
-router.patch('/:id', (req, res)=>{
-    const post = Post.updateOne({_id: req.params.id}, {$set:{
-        title: req.body.title,
-        description: req.body.description
-    }})
-    .then( post=>{
-        res.json({Updated: "post updated succesfully"})}
-    ).catch(err=>{
-        res.json({message: "couldn't find the id"})
-    })
+router.patch('/:id', async (req, res, next)=>{
+
+try{
+    const id = req.params.id
+    const updates = req.body
+
+    const result = await Post.findByIdAndUpdate(id, updates)
+    res.send(updates)
+} catch (error){
+    console.log(error.message)
+}
+
+
+
 })
 
 module.exports = router;
